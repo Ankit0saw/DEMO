@@ -1,8 +1,8 @@
 //responsible for establishing connection
 const mongoose=require('mongoose');
 require('dotenv').config(); // Load environment variables from .env file
-//const mongoURL=process.env.MONGODB_URL_LOCAL; // MongoDB connection URL
-const mongoURL=process.env.MONGODB_URL; // MongoDB connection URL
+const mongoURL=process.env.MONGODB_URL_LOCAL || 'mongodb://localhost:27017/myDatabase'; // MongoDB connection URL
+//const mongoURL=process.env.MONGODB_URL; // MongoDB connection URL
 
 mongoose.connect(mongoURL)
 .then(() => console.log("MongoDB connected successfully"))

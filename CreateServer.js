@@ -12,7 +12,19 @@ app.use(bodyParser.json()); // Use body-parser middleware to parse JSON request 
 const person=require('./models/person'); // Import the person model 
 const menuItem=require('./models/menuItems'); // Import the menuItems model
 
-app.get('/', function (req, res) {
+const passport=require('./auth'); // Import the authentication module
+//middleware function
+const logRequestDetails = (req, res, next) => {
+    console.log(`Request Time: [${new Date().toLocaleString()}]`); // Log the current date and time
+    console.log(`Request Method: ${req .method}`); // Log the HTTP method of the request
+    console.log(`Request URL: ${req.url}`); // Log the URL of the request
+    next(); // Call the next middleware or route handler
+}
+app.use(logRequestDetails); // Use the middleware function for all routes
+app.use(passport.initialize()); // Initialize passport middleware
+
+const localAuthMiddleware=passport.authenticate('local',{session:false});
+app.get('/',localAuthMiddleware ,function (req, res) {
   res.send('Hello World')
 })
 
@@ -36,7 +48,7 @@ app.get('/idli', function (req, res) {
 const personRoutes = require('./routes/personRoutes'); // Import the person routes
 const menuRoutes = require('./routes/menuRoutes'); // Import the menu routes
 // Use the imported routes for handling requests
-app.use('/person', personRoutes);
+app.use('/person',localAuthMiddleware, personRoutes);
 app.use('/menu',menuRoutes); 
 
 app.listen(3000, () => {
