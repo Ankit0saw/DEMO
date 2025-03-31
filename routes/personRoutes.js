@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const person = require('../models/person'); // Import the person model
-
-router.post('/', async function (req, res) {
+const {jwtAuthMiddleware,generateToken}=require('../jwt'); // Import the authentication module
+router.post('/signup', async function (req, res) {
     try{
       const data=req.body; // Extract data from the request body  
   
@@ -18,7 +18,17 @@ router.post('/', async function (req, res) {
       const response=await newPerson.save(); // Save the new person to the database
       // Send a success response back to the client 
       console.log('data is saved');
-      res.status(200).json({message: 'Person created successfully', data: response});
+
+      const payload={
+        id: response.id,
+        username: response.username
+      }
+
+      console.log('payload is created:',payload); // Log the payload for debugging
+      console.log(JSON.stringify(payload)); // Log the payload as a JSON string for debugging
+      const token=generateToken(payload); // Generate a JWT token for the new user
+      console.log('token is generated:',token); // Log the generated token
+      res.status(200).json({message: 'Person created successfully', data: response,Token:token}); // Send the person data and token as a JSON response
     }
     catch(err){
       console.log(err);

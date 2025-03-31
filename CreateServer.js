@@ -48,7 +48,7 @@ app.get('/idli', function (req, res) {
 const personRoutes = require('./routes/personRoutes'); // Import the person routes
 const menuRoutes = require('./routes/menuRoutes'); // Import the menu routes
 // Use the imported routes for handling requests
-app.use('/person',localAuthMiddleware, personRoutes);
+app.use('/person', personRoutes);
 app.use('/menu',menuRoutes); 
 
 app.listen(3000, () => {
