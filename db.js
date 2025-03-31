@@ -1,7 +1,7 @@
 //responsible for establishing connection
 const mongoose=require('mongoose');
-
-const mongoURL=('mongodb://localhost:27017/myDatabase');
+require('dotenv').config(); // Load environment variables from .env file
+const mongoURL=process.env.MONGODB_URL_LOCAL; // Get the MongoDB URL from environment variables
 mongoose.connect(mongoURL)
 
 const db=mongoose.connection;

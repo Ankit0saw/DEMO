@@ -2,6 +2,7 @@ const express = require('express') // Import the express module
 const app = express() // Create an instance of express
 
 const db=require('./db'); // Import the database connection
+require('dotenv').config(); // Load environment variables from .env file
 const bodyParser = require('body-parser'); // Import body-parser to parse request bodies
 app.use(bodyParser.json()); // Use body-parser middleware to parse JSON request bodies
 
@@ -34,6 +35,8 @@ const menuRoutes = require('./routes/menuRoutes'); // Import the menu routes
 // Use the imported routes for handling requests
 app.use('/person', personRoutes);
 app.use('/menu',menuRoutes); 
+
+const PORT=process.env.PORT || 3000; // Set the port to listen on, defaulting to 3000
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
